@@ -18,6 +18,8 @@ Portal educativo estático en español para estudiantes de 8 a 15 años. Funcion
 4. Selecciona la rama `main` y carpeta `/(root)`; guarda y espera a que se publique.
 5. Abre la dirección indicada por GitHub Pages. También puedes probar `index.html` directamente sin conexión a internet.
 
+Las banderas del juego mundial se sirven desde `assets/flags/`, por lo que también funcionan sin depender de un CDN durante la partida. Para regenerar o verificar el banco local después de cambiar países, ejecuta `python descargar_banderas.py`; el script obtiene las imágenes faltantes desde FlagCDN y comprueba las 135 banderas.
+
 ## Archivos
 
 - `index.html`: estructura accesible y panel de juego.
@@ -25,6 +27,9 @@ Portal educativo estático en español para estudiantes de 8 a 15 años. Funcion
 - `data.js`: datos de geografía y preguntas de referencia.
 - `app.js`: motor de preguntas, progresión, medallas y persistencia.
 - `build_data.py`: generador opcional de `data.js`, para mantenimiento con Python 3. No es necesario subirlo a GitHub.
+- `descargar_banderas.py`: descarga y verifica las imágenes locales de banderas desde FlagCDN.
+- `validar_niveles.js`: prueba los 140 niveles, sus opciones, duplicados y recursos visuales.
+- `validacion_niveles.md`: reporte generado por el validador.
 
 ## Consideraciones
 
