@@ -1,0 +1,167 @@
+import json,random
+from pathlib import Path
+random.seed(26)
+root=Path(__file__).parent
+countries_raw='''Costa Rica|San José|América|🇨🇷
+Panamá|Ciudad de Panamá|América|🇵🇦
+Nicaragua|Managua|América|🇳🇮
+Honduras|Tegucigalpa|América|🇭🇳
+El Salvador|San Salvador|América|🇸🇻
+Guatemala|Ciudad de Guatemala|América|🇬🇹
+Belice|Belmopán|América|🇧🇿
+México|Ciudad de México|América|🇲🇽
+Estados Unidos|Washington D. C.|América|🇺🇸
+Canadá|Ottawa|América|🇨🇦
+Cuba|La Habana|América|🇨🇺
+República Dominicana|Santo Domingo|América|🇩🇴
+Haití|Puerto Príncipe|América|🇭🇹
+Jamaica|Kingston|América|🇯🇲
+Bahamas|Nasáu|América|🇧🇸
+Barbados|Bridgetown|América|🇧🇧
+Colombia|Bogotá|América|🇨🇴
+Venezuela|Caracas|América|🇻🇪
+Ecuador|Quito|América|🇪🇨
+Perú|Lima|América|🇵🇪
+Bolivia|Sucre|América|🇧🇴
+Chile|Santiago|América|🇨🇱
+Argentina|Buenos Aires|América|🇦🇷
+Uruguay|Montevideo|América|🇺🇾
+Paraguay|Asunción|América|🇵🇾
+Brasil|Brasilia|América|🇧🇷
+Guyana|Georgetown|América|🇬🇾
+Surinam|Paramaribo|América|🇸🇷
+España|Madrid|Europa|🇪🇸
+Portugal|Lisboa|Europa|🇵🇹
+Francia|París|Europa|🇫🇷
+Alemania|Berlín|Europa|🇩🇪
+Italia|Roma|Europa|🇮🇹
+Reino Unido|Londres|Europa|🇬🇧
+Irlanda|Dublín|Europa|🇮🇪
+Países Bajos|Ámsterdam|Europa|🇳🇱
+Bélgica|Bruselas|Europa|🇧🇪
+Luxemburgo|Luxemburgo|Europa|🇱🇺
+Suiza|Berna|Europa|🇨🇭
+Austria|Viena|Europa|🇦🇹
+Dinamarca|Copenhague|Europa|🇩🇰
+Noruega|Oslo|Europa|🇳🇴
+Suecia|Estocolmo|Europa|🇸🇪
+Finlandia|Helsinki|Europa|🇫🇮
+Islandia|Reikiavik|Europa|🇮🇸
+Polonia|Varsovia|Europa|🇵🇱
+Chequia|Praga|Europa|🇨🇿
+Eslovaquia|Bratislava|Europa|🇸🇰
+Hungría|Budapest|Europa|🇭🇺
+Rumanía|Bucarest|Europa|🇷🇴
+Bulgaria|Sofía|Europa|🇧🇬
+Grecia|Atenas|Europa|🇬🇷
+Croacia|Zagreb|Europa|🇭🇷
+Serbia|Belgrado|Europa|🇷🇸
+Eslovenia|Liubliana|Europa|🇸🇮
+Bosnia y Herzegovina|Sarajevo|Europa|🇧🇦
+Albania|Tirana|Europa|🇦🇱
+Macedonia del Norte|Skopie|Europa|🇲🇰
+Montenegro|Podgorica|Europa|🇲🇪
+Estonia|Tallin|Europa|🇪🇪
+Letonia|Riga|Europa|🇱🇻
+Lituania|Vilna|Europa|🇱🇹
+Ucrania|Kiev|Europa|🇺🇦
+Bielorrusia|Minsk|Europa|🇧🇾
+Moldavia|Chisináu|Europa|🇲🇩
+Malta|La Valeta|Europa|🇲🇹
+Chipre|Nicosia|Asia|🇨🇾
+Rusia|Moscú|Europa y Asia|🇷🇺
+Turquía|Ankara|Europa y Asia|🇹🇷
+China|Pekín|Asia|🇨🇳
+Japón|Tokio|Asia|🇯🇵
+Corea del Sur|Seúl|Asia|🇰🇷
+Corea del Norte|Pionyang|Asia|🇰🇵
+India|Nueva Delhi|Asia|🇮🇳
+Pakistán|Islamabad|Asia|🇵🇰
+Bangladés|Daca|Asia|🇧🇩
+Nepal|Katmandú|Asia|🇳🇵
+Bután|Timbu|Asia|🇧🇹
+Sri Lanka|Sri Jayawardenepura Kotte|Asia|🇱🇰
+Maldivas|Malé|Asia|🇲🇻
+Tailandia|Bangkok|Asia|🇹🇭
+Vietnam|Hanói|Asia|🇻🇳
+Camboya|Nom Pen|Asia|🇰🇭
+Laos|Vientián|Asia|🇱🇦
+Myanmar|Naipyidó|Asia|🇲🇲
+Malasia|Kuala Lumpur|Asia|🇲🇾
+Singapur|Singapur|Asia|🇸🇬
+Indonesia|Yakarta|Asia|🇮🇩
+Filipinas|Manila|Asia|🇵🇭
+Mongolia|Ulán Bator|Asia|🇲🇳
+Kazajistán|Astaná|Asia|🇰🇿
+Uzbekistán|Taskent|Asia|🇺🇿
+Kirguistán|Biskek|Asia|🇰🇬
+Tayikistán|Dusambé|Asia|🇹🇯
+Turkmenistán|Asjabad|Asia|🇹🇲
+Afganistán|Kabul|Asia|🇦🇫
+Irán|Teherán|Asia|🇮🇷
+Irak|Bagdad|Asia|🇮🇶
+Arabia Saudita|Riad|Asia|🇸🇦
+Emiratos Árabes Unidos|Abu Dabi|Asia|🇦🇪
+Catar|Doha|Asia|🇶🇦
+Kuwait|Ciudad de Kuwait|Asia|🇰🇼
+Omán|Mascate|Asia|🇴🇲
+Jordania|Amán|Asia|🇯🇴
+Líbano|Beirut|Asia|🇱🇧
+Israel|Jerusalén|Asia|🇮🇱
+Egipto|El Cairo|África|🇪🇬
+Marruecos|Rabat|África|🇲🇦
+Argelia|Argel|África|🇩🇿
+Túnez|Túnez|África|🇹🇳
+Libia|Trípoli|África|🇱🇾
+Sudán|Jartum|África|🇸🇩
+Etiopía|Adís Abeba|África|🇪🇹
+Kenia|Nairobi|África|🇰🇪
+Uganda|Kampala|África|🇺🇬
+Tanzania|Dodoma|África|🇹🇿
+Ruanda|Kigali|África|🇷🇼
+Nigeria|Abuya|África|🇳🇬
+Ghana|Acra|África|🇬🇭
+Senegal|Dakar|África|🇸🇳
+Costa de Marfil|Yamusukro|África|🇨🇮
+Camerún|Yaundé|África|🇨🇲
+Sudáfrica|Pretoria|África|🇿🇦
+Namibia|Windhoek|África|🇳🇦
+Botsuana|Gaborone|África|🇧🇼
+Zimbabue|Harare|África|🇿🇼
+Zambia|Lusaka|África|🇿🇲
+Mozambique|Maputo|África|🇲🇿
+Madagascar|Antananarivo|África|🇲🇬
+Australia|Canberra|Oceanía|🇦🇺
+Nueva Zelanda|Wellington|Oceanía|🇳🇿
+Fiyi|Suva|Oceanía|🇫🇯
+Papúa Nueva Guinea|Port Moresby|Oceanía|🇵🇬
+Samoa|Apia|Oceanía|🇼🇸
+Tonga|Nukualofa|Oceanía|🇹🇴'''
+countries=[x.split('|') for x in countries_raw.splitlines()]
+# Provincias y cantones de Costa Rica, división administrativa ampliamente establecida.
+cr_raw='''San José|San José,Escazú,Desamparados,Puriscal,Tarrazú,Aserrí,Mora,Goicoechea,Santa Ana,Alajuelita,Vázquez de Coronado,Acosta,Tibás,Moravia,Montes de Oca,Turrubares,Dota,Curridabat,Pérez Zeledón,León Cortés Castro
+Alajuela|Alajuela,San Ramón,Grecia,San Mateo,Atenas,Naranjo,Palmares,Poás,Orotina,San Carlos,Zarcero,Sarchí,Upala,Los Chiles,Guatuso,Río Cuarto
+Cartago|Cartago,Paraíso,La Unión,Jiménez,Turrialba,Alvarado,Oreamuno,El Guarco
+Heredia|Heredia,Barva,Santo Domingo,Santa Bárbara,San Rafael,San Isidro,Belén,Flores,San Pablo,Sarapiquí
+Guanacaste|Liberia,Nicoya,Santa Cruz,Bagaces,Carrillo,Cañas,Abangares,Tilarán,Nandayure,La Cruz,Hojancha
+Puntarenas|Puntarenas,Esparza,Buenos Aires,Montes de Oro,Osa,Quepos,Golfito,Coto Brus,Parrita,Corredores,Garabito,Monteverde,Puerto Jiménez
+Limón|Limón,Pococí,Siquirres,Talamanca,Matina,Guácimo'''
+cr=[(p,c) for line in cr_raw.splitlines() for p,cs in [line.split('|')] for c in cs.split(',')]
+parks=[('Parque Nacional Manuel Antonio','Puntarenas'),('Parque Nacional Tortuguero','Limón'),('Parque Nacional Volcán Poás','Alajuela'),('Parque Nacional Volcán Irazú','Cartago'),('Parque Nacional Corcovado','Puntarenas'),('Parque Nacional Cahuita','Limón'),('Parque Nacional Rincón de la Vieja','Guanacaste'),('Parque Nacional Volcán Arenal','Alajuela'),('Parque Nacional Braulio Carrillo','Heredia'),('Parque Nacional Santa Rosa','Guanacaste'),('Parque Nacional Marino Ballena','Puntarenas'),('Parque Nacional Carara','Puntarenas'),('Parque Nacional Palo Verde','Guanacaste'),('Parque Nacional Chirripó','San José')]
+beaches=[('Playa Tamarindo','Guanacaste'),('Playa Conchal','Guanacaste'),('Playa Sámara','Guanacaste'),('Playa Hermosa (Guanacaste)','Guanacaste'),('Playa Jacó','Puntarenas'),('Playa Dominical','Puntarenas'),('Playa Uvita','Puntarenas'),('Playa Manuel Antonio','Puntarenas'),('Playa Cocles','Limón'),('Playa Puerto Viejo','Limón'),('Playa Cahuita','Limón'),('Playa Manzanillo (Limón)','Limón')]
+# Preguntas de lectura y ciencias, con hechos y respuestas explicadas.
+facts={
+'spanish': [('¿Cuál palabra está escrita correctamente?','árbol',['arvol','árvol','arbol sin tilde']),('¿Cuál es un sustantivo?','montaña',['rápidamente','saltar','bonito']),('¿Cuál es un verbo?','correr',['azul','casa','feliz']),('¿Cuál es un adjetivo?','alegre',['niño','caminar','ayer']),('¿Cuál palabra es aguda?','canción',['árbol','música','pájaro']),('¿Cuál palabra es esdrújula?','música',['reloj','pared','papel']),('¿Qué signo inicia una pregunta en español?','¿',['¡','?','.']),('¿Cuál es el plural de lápiz?','lápices',['lápizs','lapizes','lápizes']),('¿Cuál es un sinónimo de feliz?','contento',['triste','enojado','cansado']),('¿Cuál es un antónimo de grande?','pequeño',['enorme','gigante','amplio']),('¿Qué palabra lleva tilde correctamente?','camión',['camion','camíon','cámion']),('¿Cuál es el sujeto de «La niña canta»?','La niña',['canta','niña canta','La']),('¿Cuál oración usa punto final?','Hoy llueve.',['Hoy llueve,','Hoy llueve?','Hoy llueve;']),('¿Cuál es un pronombre personal?','nosotros',['árbol','rápido','saltar']),('¿Cuál es una palabra grave o llana?','mesa',['café','compás','corazón']),('¿Cuál es un artículo definido?','el',['un','unos','una']),('¿Cuál es el diminutivo de casa?','casita',['casón','caserón','casota']),('¿Cuál es el aumentativo de perro?','perrazo',['perrito','perrillo','perrín']),('¿Cuál oración es exclamativa?','¡Qué alegría!',['¿Qué hora es?','La casa es roja.','Ven aquí.']),('¿Cuál palabra tiene hiato?','país',['tierra','ciudad','fuego'])],
+'science':[('¿Qué necesitan las plantas para hacer fotosíntesis?','luz solar',['oscuridad','plástico','arena seca']),('¿Qué órgano bombea la sangre?','corazón',['pulmón','hígado','estómago']),('¿Cuál es el planeta rojo?','Marte',['Venus','Neptuno','Júpiter']),('¿En qué estado está el hielo?','sólido',['gas','plasma','líquido']),('¿Qué gas respiramos para vivir?','oxígeno',['helio','neón','metano']),('¿Cuál es el satélite natural de la Tierra?','Luna',['Sol','Marte','Venus']),('¿Qué fuerza nos mantiene en el suelo?','gravedad',['magnetismo solamente','electricidad','fricción solamente']),('¿Qué parte de la planta absorbe agua?','raíces',['flores','frutos','semillas']),('¿Qué órgano usamos principalmente para respirar?','pulmones',['riñones','huesos','intestinos']),('¿Qué ocurre al evaporarse el agua?','pasa a gas',['se congela','se convierte en roca','desaparece la materia']),('¿Qué animal es mamífero?','delfín',['tiburón','mariposa','rana']),('¿Cuál es una fuente renovable de energía?','solar',['carbón','petróleo','gas natural']),('¿Qué sistema del cuerpo transporta la sangre?','circulatorio',['digestivo','óseo','nervioso']),('¿Qué protege el cerebro?','cráneo',['costillas','fémur','pelvis']),('¿Qué astro es una estrella?','Sol',['Tierra','Luna','Marte']),('¿Qué mide un termómetro?','temperatura',['masa','distancia','volumen']),('¿Cuál es el proceso por el que las plantas liberan vapor de agua?','transpiración',['condensación','erosión','fusión']),('¿Cuál es la unidad básica de los seres vivos?','célula',['órgano','tejido','hueso']),('¿Cuál es un cambio químico?','oxidación del hierro',['derretir hielo','cortar papel','romper vidrio']),('¿Qué protege la capa de ozono?','de parte de la radiación ultravioleta',['de toda la lluvia','de todos los terremotos','de la gravedad'])],
+'nature':[('¿Qué acción reduce residuos?','reutilizar envases',['tirarlos al río','quemar plástico','dejar basura en la playa']),('¿Qué debemos hacer con las pilas usadas?','llevarlas a recolección especial',['enterrarlas','tirarlas al mar','quemarlas']),('¿Qué protege un parque nacional?','ecosistemas y biodiversidad',['solo edificios','solo carreteras','únicamente vehículos']),('¿Cuál es una práctica de ahorro de agua?','cerrar el grifo al cepillarse',['dejarlo abierto','lavar aceras con manguera','ignorar fugas']),('¿Qué ayuda a los polinizadores?','sembrar flores nativas',['eliminar todas las flores','usar plaguicidas sin control','quemar jardines']),('¿Qué causa la deforestación?','pérdida de hábitats',['más bosques','más sombra natural','más refugio silvestre']),('¿Qué animal es polinizador?','abeja',['tiburón','cocodrilo','lombriz marina']),('¿Cuál material se puede reciclar cuando está limpio y es aceptado localmente?','papel',['residuos infecciosos','comida descompuesta','pañales usados']),('¿Qué es biodiversidad?','variedad de seres vivos',['un solo cultivo','una sola especie','solo animales domésticos']),('¿Qué debemos hacer en un sendero natural?','seguir los senderos marcados',['alimentar fauna','arrancar plantas','dejar basura']),('¿Cuál energía aprovecha el viento?','eólica',['térmica fósil','nuclear','geotérmica']),('¿Qué puede ayudar contra la erosión?','mantener cobertura vegetal',['eliminar raíces','dejar suelo desnudo','quemar toda la vegetación']),('¿Qué significa compostar?','transformar residuos orgánicos en abono',['mezclar pilas con comida','quemar plástico','tirar aceite al desagüe']),('¿Qué debemos hacer si vemos fauna silvestre?','observarla a distancia',['capturarla','darle comida','perseguirla']),('¿Cuál es un recurso natural?','agua',['botella plástica','teléfono','automóvil']),('¿Qué ecosistema costero ayuda a proteger las costas?','manglar',['estacionamiento','edificio','carretera']),('¿Cuál acción disminuye emisiones del transporte?','caminar o usar bicicleta cuando sea seguro',['dejar motor encendido','hacer viajes innecesarios','usar más combustible']),('¿Qué se debe hacer con el aceite usado de cocina?','entregarlo a un gestor adecuado',['verterlo al fregadero','tirarlo al río','derramarlo en el suelo']),('¿Qué protege los suelos?','plantar árboles',['talar sin reforestar','tirar químicos','dejar pendientes desnudas']),('¿Qué debemos evitar en playas?','dejar plásticos y basura',['recoger residuos','respetar fauna','usar basureros'])],
+'history':[('¿En qué año se independizó Costa Rica de España?','1821',['1492','1948','1889']),('¿En qué fecha se celebra la independencia de Costa Rica?','15 de septiembre',['25 de diciembre','1 de enero','2 de agosto']),('¿En qué año se abolió el ejército de Costa Rica?','1948',['1821','1914','2000']),('¿Cuál es la moneda de Costa Rica?','colón',['peso','quetzal','dólar canadiense']),('¿Cuántas provincias tiene Costa Rica?','7',['5','8','10']),('¿Qué océano baña la costa oeste de Costa Rica?','Pacífico',['Atlántico','Índico','Ártico']),('¿Qué mar baña la costa este de Costa Rica?','Caribe',['Mediterráneo','Rojo','Báltico']),('¿Cuál es la capital de Costa Rica?','San José',['Liberia','Cartago','Heredia']),('¿Cuál es la flor nacional de Costa Rica?','guaria morada',['rosa roja','girasol','orquídea negra']),('¿Cuál es el árbol nacional de Costa Rica?','guanacaste',['pino','roble europeo','abeto']),('¿Cuál es el ave nacional de Costa Rica?','yigüirro',['quetzal','águila real','tucán']),('¿Cuál es el símbolo nacional conocido como carreta?','carreta típica',['tren de vapor','bicicleta','barco']),('¿Cuál es el idioma oficial de Costa Rica?','español',['portugués','francés','alemán']),('¿Qué poder de la República elabora las leyes?','Legislativo',['Judicial','Ejecutivo','Municipal únicamente']),('¿Qué poder administra justicia?','Judicial',['Legislativo','Ejecutivo','Electoral únicamente']),('¿Qué institución organiza elecciones nacionales?','Tribunal Supremo de Elecciones',['Banco Central','Ministerio de Salud','AyA']),('¿Qué se conmemora el 11 de abril en Costa Rica?','Batalla de Rivas',['Independencia','Día de la Madre','Navidad']),('¿Quién fue Juan Santamaría?','héroe nacional de la Campaña de 1856-1857',['presidente de España','primer astronauta tico','inventor del teléfono']),('¿Qué se celebra el 25 de julio en Guanacaste?','Anexión del Partido de Nicoya',['Independencia','Día del Trabajo','Abolición del ejército']),('¿Cuál es la forma de gobierno de Costa Rica?','república democrática',['monarquía absoluta','imperio','dictadura hereditaria'])],
+'english':[('¿Cómo se dice «gato» en inglés?','cat',['dog','bird','fish']),('¿Cómo se dice «perro» en inglés?','dog',['cat','cow','tree']),('¿Cómo se dice «rojo» en inglés?','red',['blue','green','black']),('¿Cómo se dice «azul» en inglés?','blue',['yellow','red','white']),('¿Cómo se dice «agua» en inglés?','water',['fire','earth','wind']),('¿Cómo se dice «escuela» en inglés?','school',['house','park','street']),('¿Cómo se dice «libro» en inglés?','book',['chair','table','window']),('¿Cómo se dice «amigo» en inglés?','friend',['enemy','teacher','brother']),('¿Cómo se dice «lunes» en inglés?','Monday',['Sunday','Friday','April']),('¿Cómo se dice «gracias» en inglés?','thank you',['goodbye','sorry','please']),('¿Cómo se dice «árbol» en inglés?','tree',['flower','grass','river']),('¿Cómo se dice «sol» en inglés?','sun',['moon','star','cloud']),('¿Cómo se dice «feliz» en inglés?','happy',['sad','angry','tired']),('¿Cómo se dice «grande» en inglés?','big',['small','short','thin']),('¿Cómo se dice «comer» en inglés?','eat',['sleep','walk','read']),('¿Cómo se dice «correr» en inglés?','run',['sit','sing','write']),('¿Cómo se dice «familia» en inglés?','family',['city','country','forest']),('¿Cómo se dice «casa» en inglés?','house',['car','school','store']),('¿Cómo se dice «verde» en inglés?','green',['purple','orange','pink']),('¿Cómo se dice «buenos días» en inglés?','good morning',['good night','goodbye','see you'])],
+'reading':[('Lee: «Ana sembró una semilla y la regó». ¿Qué hizo Ana?','sembró y regó',['compró un libro','jugó fútbol','pintó una casa']),('Lee: «El perro duerme bajo la mesa». ¿Dónde duerme?','bajo la mesa',['sobre el techo','en el parque','junto al río']),('Lee: «Luis llevó paraguas porque llovía». ¿Por qué lo llevó?','porque llovía',['porque hacía calor','porque nevaba','porque era de noche']),('Lee: «La biblioteca abre a las ocho». ¿A qué hora abre?','a las ocho',['a las nueve','al mediodía','a las siete']),('Lee: «Sofía tiene tres lápices azules». ¿Cuántos tiene?','tres',['dos','cuatro','cinco']),('Lee: «El tren salió después del autobús». ¿Cuál salió primero?','el autobús',['el tren','ambos a la vez','ninguno']),('Lee: «Carlos prefirió té en lugar de café». ¿Qué eligió?','té',['café','jugo','agua']),('Lee: «Marta caminó lentamente para no resbalar». ¿Cómo caminó?','lentamente',['corriendo','saltando','rápidamente']),('Lee: «El libro rojo es de Paula». ¿De quién es el libro?','de Paula',['de Ana','de Luis','de Mario']),('Lee: «La tortuga llegó última». ¿En qué posición llegó?','última',['primera','segunda','tercera']),('Lee: «El cielo estaba nublado, pero no llovió». ¿Llovió?','no',['sí','nevó','granizó']),('Lee: «La niña cerró la ventana por el viento». ¿Qué cerró?','la ventana',['la puerta','el libro','el grifo']),('Lee: «El museo está frente al parque». ¿Dónde está?','frente al parque',['dentro del río','sobre la montaña','bajo el puente']),('Lee: «Pedro guardó las frutas en la canasta». ¿Qué guardó?','frutas',['zapatos','juguetes','cuadernos']),('Lee: «Julia estudió antes de jugar». ¿Qué hizo primero?','estudió',['jugó','durmió','comió']),('Lee: «La bicicleta de Eva es amarilla». ¿De qué color es?','amarilla',['azul','roja','verde']),('Lee: «El barco llegó al puerto al amanecer». ¿Cuándo llegó?','al amanecer',['a medianoche','al mediodía','al atardecer']),('Lee: «El maestro explicó dos veces». ¿Cuántas veces explicó?','dos',['una','tres','cuatro']),('Lee: «El gato saltó sobre la silla». ¿Sobre qué saltó?','la silla',['la mesa','el sofá','la cama']),('Lee: «María llevó una chaqueta porque hacía frío». ¿Qué tiempo hacía?','frío',['calor','mucho sol','bochorno'])]
+}
+for k,v in facts.items():
+ assert len(v)==20,(k,len(v))
+# Distritos verificados de cantones seleccionados; no se presentan como lista exhaustiva.
+districts={'San Ramón':['San Ramón','Santiago','San Juan','Piedades Norte','Piedades Sur','San Rafael','San Isidro','Ángeles','Alfaro','Volio','Concepción','Zapotal','Peñas Blancas'], 'Grecia':['Grecia','San Isidro','San José','San Roque','Tacares','Puente de Piedra','Bolívar'], 'Palmares':['Palmares','Zaragoza','Buenos Aires','Santiago','Candelaria','Esquipulas','La Granja'], 'Atenas':['Atenas','Jesús','Mercedes','San Isidro','Concepción','San José','Santa Eulalia','Escobal'], 'Naranjo':['Naranjo','San Miguel','San José','Cirrí Sur','San Jerónimo','San Juan','El Rosario','Palmitos'], 'Sarchí':['Sarchí Norte','Sarchí Sur','Toro Amarillo','San Pedro','Rodríguez'], 'Zarcero':['Zarcero','Laguna','Tapezco','Guadalupe','Palmira','Zapote','Brisas'], 'Alajuela':['Alajuela','San José','Carrizal','San Antonio','Guácima','San Isidro','Sabanilla','San Rafael','Río Segundo','Desamparados','Turrúcares','Tambor','Garita','Sarapiquí'], 'Cartago':['Oriental','Occidental','Carmen','San Nicolás','Aguacaliente','Guadalupe','Corralillo','Tierra Blanca','Dulce Nombre','Llano Grande','Quebradilla'], 'Heredia':['Heredia','Mercedes','San Francisco','Ulloa','Varablanca'], 'Liberia':['Liberia','Cañas Dulces','Mayorga','Nacascolo','Curubandé'], 'Limón':['Limón','Valle La Estrella','Río Blanco','Matama']}
+data={'countries':countries,'cantons':cr,'parks':parks,'beaches':beaches,'districts':districts,'facts':facts}
+(root/'data.js').write_text('window.EDU_DATA = '+json.dumps(data,ensure_ascii=False,separators=(',',':'))+';\n',encoding='utf8')
+print('countries',len(countries),'cantons',len(cr),'districts',sum(map(len,districts.values())))
